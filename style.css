@@ -1,0 +1,17 @@
+.project-media {
+  margin: -0.4rem -0.4rem 1.2rem;
+  border: 1px solid var(--line);
+  background: var(--ink);
+  overflow: hidden;
+}
+
+.project-media img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+.big-name {
+  bottom: 36% !important;
+}
