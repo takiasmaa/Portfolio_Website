@@ -8,8 +8,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Caveat:wght@500;700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<script src="script.js" defer></script>
 
 <link rel="stylesheet" href="style.css">
 </head>
@@ -59,21 +57,17 @@
       </div>
 
       <div class="photo-wrap" id="photo-area">
-<<<<<<< Updated upstream:apps/asmaa-portfolio/index.html
         <img src="assets/portfolio.png" alt="Portrait of Asmaa Taki">
-=======
-        <img src="portfolio.png" alt="Portrait of Asmaa Taki">
->>>>>>> Stashed changes:index.html
       </div>
 
       <div class="cert-sticker">
-          <img class="sticker-ms-logo" src="microsoft-logo.png" alt="Microsoft logo">
+          <img class="sticker-ms-logo" src="assets/microsoft-logo.png" alt="Microsoft logo">
           <span class="sticker-cert">PL-300 · DP-600</span><br>
           Microsoft Certified ✓
       </div>
 
-      <img class="hero-logo hero-logo-umpi" src="logo_footer_umpi.png" alt="University of Maine at Presque Isle logo">
-      <img class="hero-logo hero-logo-brown" src="brown-logo-brown-university-logo.png" alt="Brown University logo">
+      <img class="hero-logo hero-logo-umpi" src="assets/logo_footer_umpi.png" alt="University of Maine at Presque Isle logo">
+      <img class="hero-logo hero-logo-brown" src="assets/brown-logo-brown-university-logo.png" alt="Brown University logo">
 
       <div class="cert-sticker2">✦ Summa Cum Laude<br>3.98 GPA</div>
 
@@ -182,7 +176,7 @@
       <div class="education-grid">
         <article class="education-card">
           <div class="education-logo-wrap">
-            <img src="brown-logo-brown-university-logo.png" alt="Brown University logo">
+            <img src="assets/brown-logo-brown-university-logo.png" alt="Brown University logo">
           </div>
           <div class="education-copy">
             <h3>Brown University</h3>
@@ -194,7 +188,7 @@
 
         <article class="education-card">
           <div class="education-logo-wrap">
-            <img src="logo_footer_umpi.png" alt="University of Maine at Presque Isle logo">
+            <img src="assets/logo_footer_umpi.png" alt="University of Maine at Presque Isle logo">
           </div>
           <div class="education-copy">
             <h3>University of Maine at Presque Isle</h3>
@@ -316,23 +310,18 @@
   </footer>
 
 <script>
-  const yearElement = document.getElementById('year');
-  if (yearElement) {
-    yearElement.textContent = new Date().getFullYear();
-  }
+  document.getElementById('year').textContent = new Date().getFullYear();
 
   const photoArea = document.getElementById('photo-area');
-  if (photoArea) {
-    photoArea.addEventListener('dragover', e => e.preventDefault());
-    photoArea.addEventListener('drop', e => {
-      e.preventDefault();
-      const file = e.dataTransfer.files[0];
-      if (file && file.type.startsWith('image/')) {
-        const url = URL.createObjectURL(file);
-        photoArea.innerHTML = `<img src="${url}" alt="Portrait of Asmaa Taki">`;
-      }
-    });
-  }
+  photoArea.addEventListener('dragover', e => e.preventDefault());
+  photoArea.addEventListener('drop', e => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const url = URL.createObjectURL(file);
+      photoArea.innerHTML = `<img src="${url}" alt="Portrait of Asmaa Taki">`;
+    }
+  });
 </script>
 </body>
 </html>
