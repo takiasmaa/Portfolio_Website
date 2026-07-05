@@ -13,7 +13,7 @@ patches:
 
 replicas:
   - name: asmaa-portfolio
-    count: 1
+    count: 2
 
 labels:
   - pairs:
