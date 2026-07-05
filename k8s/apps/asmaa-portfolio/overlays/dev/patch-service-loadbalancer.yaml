@@ -1,0 +1,7 @@
+# This patch only changes the Service type for the dev overlay
+apiVersion: v1
+kind: Service
+metadata:
+  name: asmaa-portfolio
+spec:
+  type: LoadBalancer
