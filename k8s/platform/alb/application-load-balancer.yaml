@@ -1,0 +1,8 @@
+apiVersion: alb.networking.azure.io/v1
+kind: ApplicationLoadBalancer
+metadata:
+  name: resume-alb
+  namespace: alb-infra
+spec:
+  associations:
+    - /subscriptions/5b984636-2b0c-44e4-83d5-c65f9b6db96a/resourceGroups/MC_rg-resume-dev_aks-resume-dev_eastus/providers/Microsoft.Network/virtualNetworks/aks-vnet-29582768/subnets/aks-appgateway

@@ -5,6 +5,8 @@ kind: Kustomization
 resources:
   - deployment.yaml
   - service.yaml
+  - gateway.yaml
+  - httproute.yaml
 
 labels:
   - pairs:
