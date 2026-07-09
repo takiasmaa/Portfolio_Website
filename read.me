@@ -10,3 +10,114 @@ LaunchMyWork is a Kubernetes-based portfolio hosting platform using:
 - Terraform
 - Kustomize
 - ArgoCD
+
+===
+Option A: Push same tag v1 and restart Deployment
+
+Use this when your Kubernetes YAML still has:
+
+image: acrlaunchmywork.azurecr.io/asmaa-portfolio:v1
+
+From repo root:
+
+cd C:\Users\Steven\Documents\GithubRepo\Portfolio_Website
+
+Login to ACR:
+
+az acr login --name acrlaunchmywork
+
+Rebuild the image with the same tag:
+
+docker build `
+  -t acrlaunchmywork.azurecr.io/asmaa-portfolio:v1 `
+  .\apps\asmaa-portfolio
+
+Push to ACR:
+
+docker push acrlaunchmywork.azurecr.io/asmaa-portfolio:v1
+
+Restart the Kubernetes Deployment so it pulls the updated image:
+
+kubectl rollout restart deployment asmaa-portfolio -n portfolio-asmaa
+
+Watch rollout:
+
+kubectl rollout status deployment asmaa-portfolio -n portfolio-asmaa
+
+Verify pod restarted:
+
+kubectl get pods -n portfolio-asmaa
+
+Test the website:
+
+curl.exe https://asmaa.launchmywork.com
+
+Or open:
+
+https://asmaa.launchmywork.com
+Option B: Better manual approach with versioned tags
+
+Use this when you want cleaner version history, like:
+
+v1
+v2
+v3
+v4
+
+Example for v2:
+
+cd C:\Users\Steven\Documents\GithubRepo\Portfolio_Website
+
+Login:
+
+az acr login --name acrlaunchmywork
+
+Build with new tag:
+
+docker build `
+  -t acrlaunchmywork.azurecr.io/asmaa-portfolio:v2 `
+  .\apps\asmaa-portfolio
+
+Push:
+
+docker push acrlaunchmywork.azurecr.io/asmaa-portfolio:v2
+
+Update your Kubernetes image reference.
+
+Open:
+
+k8s/apps/asmaa-portfolio/overlays/prod/patch-image.yaml
+
+Change:
+
+image: acrlaunchmywork.azurecr.io/asmaa-portfolio:v1
+
+to:
+
+image: acrlaunchmywork.azurecr.io/asmaa-portfolio:v2
+
+Then commit and push:
+
+git add k8s/apps/asmaa-portfolio/overlays/prod/patch-image.yaml
+git commit -m "Update Asmaa portfolio image to v2"
+git push
+
+Since ArgoCD is watching the repo, it should sync automatically.
+
+Check ArgoCD/Kubernetes:
+
+kubectl get applications -n argocd
+kubectl get pods -n portfolio-asmaa
+kubectl rollout status deployment asmaa-portfolio -n portfolio-asmaa
+
+Verify the deployment is using v2:
+
+kubectl get deployment asmaa-portfolio -n portfolio-asmaa -o jsonpath="{.spec.template.spec.containers[0].image}"
+
+Expected:
+
+acrlaunchmywork.azurecr.io/asmaa-portfolio:v2
+
+Test:
+
+curl.exe https://asmaa.launchmywork.com
