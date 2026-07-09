@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: asmaa-portfolio
+  namespace: portfolio-asmaa
+spec:
+  template:
+    spec:
+      containers:
+        - name: asmaa-portfolio
+          image: acrlaunchmywork.azurecr.io/asmaa-portfolio:v1

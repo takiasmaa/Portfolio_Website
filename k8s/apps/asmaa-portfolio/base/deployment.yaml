@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: asmaa-portfolio
+  namespace: portfolio-asmaa
+  labels:
+    app: asmaa-portfolio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asmaa-portfolio
+  template:
+    metadata:
+      labels:
+        app: asmaa-portfolio
+    spec:
+      containers:
+        - name: asmaa-portfolio
+          image: acrlaunchmywork.azurecr.io/asmaa-portfolio:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
