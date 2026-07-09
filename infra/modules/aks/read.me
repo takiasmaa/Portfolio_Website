@@ -1,0 +1,77 @@
+This will be our biggest module because AKS needs identity, networking, autoscaling, ACR pull permission, OIDC, Workload Identity and Key Vault CSI support.
+
+For now, this AKS module will create:
+- AKS Free tier
+- 1 system node pool
+- Cluster autoscaler min 1 / max 2
+- Azure CNI Overlay
+- OIDC issuer enabled
+- Workload Identity enabled
+- Key Vault Secrets Provider add-on enabled
+- ACR pull permission for AKS kubelet identity
+
+======================
+
+Azure CNI Overlay 
+My terraform file says:
+network_plugin = "azure"
+network_plugin = "overlay"
+
+This means we are using Azure CNI with overlay networking. This allows pods to have their own IP addresses and communicate with other pods in the cluster, as well as with resources in the virtual network. 
+
+Big Picture
+In AKS networking, there are usually three important IP ranges:
+1. Node IP range
+2. Pod CIDR
+3. Service CIDR
+
+For Azure CNI Overlay, the important idea is:
+- Nodes get real Azure VNet IP addresses
+- Pods get private overlay IPs
+- Services get internal Kubernetes virtual IPs
+=========================================
+Azure VNet / subnet for nodes
+└── 10.1.0.0/24
+    ├── node-1: 10.1.0.4
+    │   └── assigned pod block: 10.244.0.0/24
+    │       ├── pod-a: 10.244.0.10
+    │       └── pod-b: 10.244.0.11
+    │
+    ├── node-2: 10.1.0.5
+    │   └── assigned pod block: 10.244.1.0/24
+    │       ├── pod-c: 10.244.1.10
+    │       └── pod-d: 10.244.1.11
+    │
+    └── node-3: 10.1.0.6
+        └── assigned pod block: 10.244.2.0/24
+            ├── pod-e: 10.244.2.10
+            └── pod-f: 10.244.2.11
+
+We are not splitting blocks of the node subnet we receive. Rather we are assigning two completely different IPs, a block that is assigned for pod
+=========================================
+service_cidr = "10.0.0.0/16"
+variable "service_cidr" {
+  default = "10.0.0.0/16"
+}
+
+This is not for pods.
+
+This is for Kubernetes Services.
+
+When you create a service like:
+
+kind: Service
+metadata:
+  name: asmaa-portfolio
+
+Kubernetes gives it an internal virtual IP, called a ClusterIP.
+
+Example:
+
+asmaa-portfolio service = 10.0.45.40
+
+asmaa.launchmywork.com
+→ Gateway
+→ HTTPRoute
+→ Service: asmaa-portfolio, ClusterIP 10.0.45.40
+→ Pod: 10.244.0.12

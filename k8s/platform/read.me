@@ -1,0 +1,55 @@
+Within the platform folder we have alb and gateway folders. This is because there are two sides to Gateway/API + ALB. 
+1. Azure infrastructure side
+2. Kubernetes manifest side
+
+They are related, but they live in different places. 
+===========================================================
+1. infra/ is for Azure resources
+
+This is Terraform-managed Azure infrastructure:
+
+infra/
+├── envs/prod/
+└── modules/
+
+This should manage things like:
+
+AKS
+ACR
+Key Vault
+Managed Identity
+Role Assignments
+Eventually: ALB/Gateway API Azure-side enablement
+
+So yes, the Azure infrastructure part of Application Gateway for Containers belongs in Terraform.
+
+2. k8s/platform/ is for cluster-wide Kubernetes resources
+
+This folder is for Kubernetes YAML that runs inside the AKS cluster.
+
+k8s/platform/
+├── argocd/
+├── alb/
+└── gateway/
+
+This is not Azure Terraform infrastructure. This is the shared Kubernetes platform layer.
+
+For example:
+
+k8s/platform/alb/
+
+would hold Kubernetes resources related to the ALB controller/ApplicationLoadBalancer CRD.
+
+k8s/platform/gateway/
+
+would hold Gateway API resources like:
+
+kind: Gateway
+
+Then app-specific routes go under:
+
+k8s/apps/asmaa-portfolio/
+
+with:
+
+kind: HTTPRoute

@@ -1,0 +1,88 @@
+We need this because later Kubernetes workloads, cert-manager, or GitHub Actions can use identity instead of storing passwords/secrets. 
+
+AKS / workloads -> securely read from Azure Key Vault
+GitHub Actions -> authenticate to Azure with OIDC later
+Cert-manager / DNS automation later if needed
+
+1. System-assigned managed identity
+2. User-assigned managed identity
+3. Workload identity
+
+============
+System-assigned managed identity
+- This is created automatically for Azure resources and dies with that resource. 
+
+For example, AKS cluster creates its own identity. 
+In Terraform:
+
+identity {
+  type = "SystemAssigned"
+}
+
+This means:
+- Azure creates an identity tied directly to the AKS cluster. If the AKS cluster is deleted, the identity is deleted too. 
+
+Use this when:
+
+The identity only belongs to one resource.
+You do not need to reuse it.
+You want simple setup.
+
+============
+User-assigned managed identity
+It is UAMI a standalone Azure identity that you create yourself. 
+
+For example: 
+mi-launchmywork-workloads
+
+It does NOT belong to only one resource. It can be reused, assigned permissions, and referenced from Kubernetes. 
+
+Use this when:
+- You want an identity with a stable life lifecycle. 
+- You want to assign Key Vault permissions to it. 
+- You want Kubernetes workloads to use it.
+- You may reuse it across apps or services. 
+
+For this project, UAMI is useful because we can say:
+
+This identity is allowed to read Key Vault secrets.
+Kubernetes service accounts can federate into this identity.
+
+============
+Workload identity
+It is not a managed identity itself.
+
+It is a bridge that let's Kubernetes pod/service account use an Azure identity without storing secrets. 
+
+Flow:
+Pod 
+-> Kubernetes service account
+-> AKS OIDC issuer 
+-> Federated credentials
+-> User-assigned managed identity
+-> Azure Key Vault
+
+So when we say "use Workload Identity", we usually mean:
+- Create a UAMI in Azure
+- Create a Kubernetes service account
+- Create a federated identity credential linking the service account to the UAMI.
+- Give the UAMI permissions, like Key Vault Secrets User. 
+
+AKS Workload Identity uses projected Kubernetes service account tokens to authenticate workloads to Azure AD. This allows pods to access Azure resources without storing or managing passwords, client secrets, or static credentials.
+
+What are federated tokens and federated identity?
+
+Federated identity means one identity system trusts another identity system to verify who someone, or something, is.
+
+In this case, Azure AD trusts Kubernetes to identify a workload through its Kubernetes service account. Kubernetes issues a service account token, and Azure AD accepts that token because a trust relationship has been configured between the Kubernetes service account and the Azure managed identity.
+
+Federated just means joining together separate entities into a single cooperative group under a central authority or shared agreement.
+
+A simple example is a federal government and state governments. The states are separate entities, but they operate under a shared agreement with the federal government. Similarly, Kubernetes and Azure AD are separate systems, but federation allows them to trust each other under a defined relationship.
+
+The key benefit is that the workload can access Azure resources without needing a stored password or secret. Instead of managing credentials manually, Azure AD validates the Kubernetes-issued token and allows the workload to use the mapped managed identity.
+
+============
+UAMI is just the identity. We would have to make it into workload identity by creating a federated identity credential and linking it to a Kubernetes service account. For Kubernetes pods, creating a UAMI is not enough by itself. You usually need Workload Identity to let the pod use that UAMI safely.
+
+Small exception: some Azure resources can attach a UAMI directly, like a VM or App Service. In that case, you do not need AKS Workload Identity because the Azure resource itself is assigned the UAMI directly. But Kubernetes pods are not Azure resources in that same way, so they need the Workload Identity bridge.

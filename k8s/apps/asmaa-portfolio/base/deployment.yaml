@@ -1,8 +1,8 @@
-# Because your current Dockerfile uses regular NGINX on port 80, the container port is also 80.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: asmaa-portfolio
+  namespace: portfolio-asmaa
   labels:
     app: asmaa-portfolio
 spec:
@@ -17,25 +17,7 @@ spec:
     spec:
       containers:
         - name: asmaa-portfolio
-          image: asmaa-portfolio:local
+          image: acrlaunchmywork.azurecr.io/asmaa-portfolio:v1
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
-          resources:
-            requests:
-              cpu: "50m"
-              memory: "64Mi"
-            limits:
-              cpu: "200m"
-              memory: "256Mi"
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 10
-            periodSeconds: 20
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 5
-            periodSeconds: 10

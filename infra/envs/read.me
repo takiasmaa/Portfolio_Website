@@ -1,0 +1,22 @@
+infra/
+  modules/
+    acr/
+    aks/
+    key-vault/
+    managed-identity/
+    resource-group/
+    role-assignment/
+  envs/
+    dev/
+      main.tf        # calls modules with dev-specific vars
+      terraform.tfvars
+      backend.tf      # separate state file
+    staging/
+    prod/
+      main.tf
+      terraform.tfvars
+      backend.tf
+
+===
+Imagine yourself with the above format. 
+You would want different staging env and all we need to do is just create a new folder under envs called staging and copy the dev folder contents into it. Then we can modify the terraform.tfvars file to have staging-specific variables. This way, we can maintain separate configurations for different environments while reusing the same modules.

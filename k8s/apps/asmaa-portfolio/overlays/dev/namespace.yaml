@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: resume-asmaa-dev
-  labels:
-    app.kubernetes.io/name: asmaa-portfolio
-    environment: dev

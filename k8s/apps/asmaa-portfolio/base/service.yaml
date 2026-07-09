@@ -1,17 +1,8 @@
-# This creates an internal Kubernetes Service.
-
-# Traffic flow:
-
-# Service port 80
-# → Pod/container port 80
-# → NGINX serves index.html
-
 apiVersion: v1
 kind: Service
 metadata:
   name: asmaa-portfolio
-  labels:
-    app: asmaa-portfolio
+  namespace: portfolio-asmaa
 spec:
   type: ClusterIP
   selector:
