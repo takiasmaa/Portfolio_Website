@@ -43,6 +43,15 @@ module "workload_identity" {
   tags                = var.tags
 }
 
+module "external_secrets_federated_identity" {
+  source = "../../modules/federated-identity-credential"
+
+  name                      = "fic-external-secrets-cert-manager"
+  user_assigned_identity_id = module.workload_identity.id
+  issuer                    = module.aks.oidc_issuer_url
+  subject                   = "system:serviceaccount:external-secrets:external-secrets"
+}
+
 module "workload_identity_key_vault_secrets_user" {
   source = "../../modules/role-assignment"
 

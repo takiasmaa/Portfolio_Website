@@ -1,0 +1,10 @@
+﻿installCRDs: true
+
+serviceAccount:
+  create: true
+  name: external-secrets
+  annotations:
+    azure.workload.identity/client-id: "6e6f385f-ac43-4e33-bf79-975d2c87aa0a"
+
+podLabels:
+  azure.workload.identity/use: "true"
