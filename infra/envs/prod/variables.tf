@@ -162,10 +162,11 @@ variable "aks_network_plugin_mode" {
   default     = "overlay"
 }
 
+# In the AzureRM provider version you are using, network_policy = "none" is not accepted. To have no network policy, we should omit the network_policy argument instead of setting it to "none".
 variable "aks_network_policy" {
   description = "Network policy engine used by AKS."
   type        = string
-  default     = "none"
+  default     = null
 }
 
 variable "aks_load_balancer_sku" {

@@ -12,7 +12,7 @@ aks_name = "aks-launchmywork-prod"
 
 aks_dns_prefix = "aks-launchmywork-prod"
 
-node_vm_size = "Standard_D2as_v5"
+node_vm_size = "Standard_D2s_v4"
 
 min_count = 1
 
