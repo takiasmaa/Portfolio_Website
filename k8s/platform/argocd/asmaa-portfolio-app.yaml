@@ -8,7 +8,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/takiasmaa/Portfolio_Website.git
+    repoURL: https://github.com/IceBear1026/Portfolio_Website.git
     targetRevision: main
     path: k8s/apps/asmaa-portfolio/overlays/prod
 
