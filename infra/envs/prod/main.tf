@@ -116,5 +116,5 @@ module "aks_gateway_addons" {
 
   aks_id                            = module.aks.id
   application_load_balancer_enabled = false
-  gateway_api_installation          = "None"
+  gateway_api_installation          = "Disabled"
 }

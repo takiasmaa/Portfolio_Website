@@ -20,6 +20,8 @@ max_count = 2
 
 aks_network_data_plane = "cilium"
 
+aks_network_policy = "cilium"
+
 tags = {
   project     = "launchmywork"
   environment = "prod"

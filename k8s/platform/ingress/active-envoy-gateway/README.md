@@ -18,3 +18,17 @@ AKS is using Azure CNI Powered by Cilium for the dataplane, but AKS-managed Cili
 Previous AGC architecture is archived under:
 - k8s/platform/gateway-agc-archived
 - k8s/platform/alb-agc-archived
+
+=========
+
+How to install the controller:
+helm upgrade --install envoy-gateway `
+  oci://docker.io/envoyproxy/gateway-helm `
+  --version v1.5.0 `
+  --namespace envoy-gateway-system `
+  --create-namespace
+
+kubectl wait --timeout=5m `
+  -n envoy-gateway-system `
+  deployment/envoy-gateway `
+  --for=condition=Available
