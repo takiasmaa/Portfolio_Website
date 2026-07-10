@@ -13,3 +13,15 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.launchmywork.com"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: launchmywork-wildcard-tls
+      allowedRoutes:
+        namespaces:
+          from: All

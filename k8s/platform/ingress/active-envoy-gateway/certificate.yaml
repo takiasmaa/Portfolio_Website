@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: launchmywork-wildcard-tls
+  namespace: platform-envoy-gateway
+spec:
+  secretName: launchmywork-wildcard-tls
+  issuerRef:
+    name: letsencrypt-cloudflare-dns01
+    kind: ClusterIssuer
+  dnsNames:
+    - "*.launchmywork.com"
+    - launchmywork.com

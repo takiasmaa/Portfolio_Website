@@ -4,5 +4,5 @@ kind: Kustomization
 resources:
   - ../../base
 
-patchesStrategicMerge:
-  - patch-image.yaml
+patches:
+  - path: patch-image.yaml
