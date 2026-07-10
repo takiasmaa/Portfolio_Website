@@ -57,22 +57,18 @@
       </div>
 
       <div class="photo-wrap" id="photo-area">
-        <img src="assets/portfolio.png" alt="Portrait of Asmaa Taki">
-      </div>
+  <img class="portrait-photo" src="assets/portfolio.png" alt="Portrait of Asmaa Taki">
 
-      <div class="cert-sticker">
-          <img class="sticker-ms-logo" src="assets/microsoft-logo.png" alt="Microsoft logo">
-          <span class="sticker-cert">PL-300 · DP-600</span><br>
-          Microsoft Certified ✓
-      </div>
-<div class="cert-sticker">
-    <img class="sticker-ms-logo" src="assets/microsoft-logo.png" alt="Microsoft logo">
-    <span class="sticker-cert">PL-300 · DP-600</span><br>
-    Microsoft Certified ✓
+  <img class="hero-logo hero-logo-umpi" src="assets/logo_footer_umpi.png" alt="University of Maine at Presque Isle logo">
+  <img class="hero-logo hero-logo-brown" src="assets/brown-logo-brown-university-logo.png" alt="Brown University logo">
 </div>
 
-<img class="hero-logo hero-logo-umpi" src="assets/logo_footer_umpi.png" alt="University of Maine at Presque Isle logo">
-<img class="hero-logo hero-logo-brown" src="assets/brown-logo-brown-university-logo.png" alt="Brown University logo">
+      <div class="cert-sticker">
+        <img class="sticker-ms-logo" src="assets/microsoft-logo.png" alt="Microsoft logo">
+        <span class="sticker-cert">PL-300 · DP-600</span><br>
+        Microsoft Certified ✓
+      </div>
+
       <div class="bottom-bar">
         <div class="credit-left">Business Analyst / BI Engineer</div>
         <div class="credit-right">By Asmaa</div>
@@ -156,10 +152,38 @@
         </article>
 
         <article class="project-card" data-number="02">
-          <h3>Marketing Funnel Analytics Dashboard</h3>
-          <p>Modeled 5 tables and engineered 25+ DAX measures including MQL Rate, Avg CAC, Avg CLTV, Churn Rate, Net MRR, and CLTV:CAC Ratio. Built a 5-page dashboard tracking 505K leads across 11 channels and $26.29M in ad spend.</p>
-          <div class="tags"><span class="tag">Marketing Analytics</span><span class="tag">DAX</span><span class="tag">Power BI</span><span class="tag">MRR</span></div>
-        </article>
+          <div class="project-slider" id="funnel-slider">
+  <button class="slider-btn prev" type="button" aria-label="Previous image">&#10094;</button>
+
+  <div class="slider-window">
+    <div class="slider-track">
+      <img class="slide" src="assets/funnel_model.png" alt="Marketing Funnel Analytics Power BI data model">
+      <img class="slide" src="assets/funnel_code.png" alt="Marketing Funnel Analytics custom HTML landing page code">
+      <img class="slide" src="assets/funnel_landing.png" alt="Marketing Funnel Analytics dashboard landing page">
+      <img class="slide" src="assets/funnel_dashboard.png" alt="Marketing Funnel Analytics dashboard report page">
+    </div>
+  </div>
+
+  <button class="slider-btn next" type="button" aria-label="Next image">&#10095;</button>
+
+  <div class="slider-dots">
+    <button class="dot active" type="button" aria-label="Go to slide 1"></button>
+    <button class="dot" type="button" aria-label="Go to slide 2"></button>
+    <button class="dot" type="button" aria-label="Go to slide 3"></button>
+    <button class="dot" type="button" aria-label="Go to slide 4"></button>
+  </div>
+</div>
+
+        <h3>Marketing Funnel Analytics Dashboard</h3>
+        <p>Modeled 5 tables and engineered 25+ DAX measures including MQL Rate, Avg CAC, Avg CLTV, Churn Rate, Net MRR, and CLTV:CAC Ratio. Built a 5-page dashboard tracking 505K leads across 11 channels and $26.29M in ad spend.</p>
+
+  <div class="tags">
+    <span class="tag">Marketing Analytics</span>
+    <span class="tag">DAX</span>
+    <span class="tag">Power BI</span>
+    <span class="tag">MRR</span>
+  </div>
+</article>
 
         <article class="project-card" data-number="03">
           <h3>Live-Event Market Analytics</h3>
@@ -308,15 +332,57 @@
   document.getElementById('year').textContent = new Date().getFullYear();
 
   const photoArea = document.getElementById('photo-area');
+  const portraitPhoto = photoArea.querySelector('.portrait-photo');
+
   photoArea.addEventListener('dragover', e => e.preventDefault());
+
   photoArea.addEventListener('drop', e => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
+
     if (file && file.type.startsWith('image/')) {
       const url = URL.createObjectURL(file);
-      photoArea.innerHTML = `<img src="${url}" alt="Portrait of Asmaa Taki">`;
+      portraitPhoto.src = url;
     }
   });
+    const funnelSlider = document.getElementById('funnel-slider');
+
+  if (funnelSlider) {
+    const track = funnelSlider.querySelector('.slider-track');
+    const slides = funnelSlider.querySelectorAll('.slide');
+    const prevBtn = funnelSlider.querySelector('.prev');
+    const nextBtn = funnelSlider.querySelector('.next');
+    const dots = funnelSlider.querySelectorAll('.dot');
+
+    let currentSlide = 0;
+
+    function updateSlider() {
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+      });
+    }
+
+    prevBtn.addEventListener('click', () => {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      updateSlider();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      currentSlide = (currentSlide + 1) % slides.length;
+      updateSlider();
+    });
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        currentSlide = index;
+        updateSlider();
+      });
+    });
+
+    updateSlider();
+  }
 </script>
 </body>
 </html>
