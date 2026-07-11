@@ -153,6 +153,109 @@ a {
   opacity: 0.7;
 }
 
+.hero-skills {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.skill-badge {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.48rem;
+  height: 38px;
+  max-width: 170px;
+  padding: 0.38rem 0.76rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(250, 247, 242, 0.88);
+  backdrop-filter: blur(8px);
+  color: var(--ink-mid);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 8px 22px rgba(26, 20, 16, 0.08);
+  overflow: hidden;
+  animation: floatBadge 4.5s ease-in-out infinite;
+}
+
+.skill-icon {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.skill-icon img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  display: block;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+.badge-powerbi {
+  top: 26%;
+  left: 34%;
+  --rot: -6deg;
+  animation-delay: 0s;
+}
+
+.badge-python {
+  top: 21%;
+  left: 43%;
+  --rot: 4deg;
+  animation-delay: 0.35s;
+}
+
+.badge-sql {
+  top: 26%;
+  left: 61%;
+  --rot: 6deg;
+  animation-delay: 0.7s;
+}
+
+.badge-html {
+  top: 39%;
+  left: 30%;
+  --rot: -5deg;
+  animation-delay: 1.05s;
+}
+
+.badge-pyspark {
+  top: 39%;
+  left: 64%;
+  --rot: 5deg;
+  animation-delay: 1.4s;
+}
+
+.badge-fabric {
+  top: 16%;
+  left: 52%;
+  --rot: -3deg;
+  animation-delay: 1.75s;
+}
+
+@keyframes floatBadge {
+  0%, 100% {
+    transform: translateY(0) rotate(var(--rot));
+  }
+
+  50% {
+    transform: translateY(-7px) rotate(var(--rot));
+  }
+}
+
 .big-name {
   position: absolute;
   bottom: 32%;
@@ -1086,6 +1189,10 @@ a {
     white-space: nowrap;
     padding: 0.5rem 0.7rem;
   }
+  
+  .hero-skills {
+    display: none;
+  }
 
   .hero {
     min-height: 780px;
@@ -1103,6 +1210,16 @@ a {
   .accent-rect {
     display: none;
   }
+
+
+@keyframes floatBadge {
+  0%, 100% {
+    transform: translateY(0) rotate(var(--rot));
+  }
+  50% {
+    transform: translateY(-7px) rotate(var(--rot));
+  }
+}
 
   .big-name {
     bottom: 23%;
