@@ -813,7 +813,44 @@ a {
 .cert-copy h3 {
   margin-bottom: 0.45rem;
 }
+.education-card {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 1.4rem;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: clamp(1.4rem, 2.5vw, 2rem);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
 
+.education-logo-wrap {
+  width: 150px;
+  height: 110px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  border: 1px solid var(--line);
+  padding: 0.75rem;
+  overflow: hidden;
+}
+
+.education-logo-wrap img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.brown-logo-wrap img {
+  max-width: 120%;
+  max-height: 120%;
+}
+
+.umpi-logo-wrap img {
+  max-width: 95%;
+  max-height: 95%;
+}
 .education-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -852,6 +889,78 @@ a {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-light);
+}
+.education-card {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 1.4rem;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: clamp(1.4rem, 2.5vw, 2rem);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.education-card-expanded {
+  align-items: start;
+}
+
+.education-logo-wrap {
+  width: 150px;
+  height: 110px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  border: 1px solid var(--line);
+  padding: 0.75rem;
+  overflow: hidden;
+}
+
+.education-logo-wrap img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.brown-logo-wrap img {
+  max-width: 120%;
+  max-height: 120%;
+}
+
+.umpi-logo-wrap img {
+  max-width: 95%;
+  max-height: 95%;
+}
+
+.course-highlight {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.course-label {
+  margin-bottom: 0.7rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+}
+
+.course-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.course-tags span {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.35rem 0.62rem;
+  font-size: 0.72rem;
+  color: var(--ink-mid);
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .timeline {
@@ -1023,7 +1132,18 @@ a {
   .education-grid {
     grid-template-columns: 1fr;
   }
+.education-card {
+  grid-template-columns: 1fr;
+}
 
+.education-logo-wrap {
+  width: 100%;
+  height: 120px;
+}
+
+.course-tags span {
+  font-size: 0.68rem;
+}
   .cert-card {
     grid-template-columns: 96px minmax(0, 1fr);
   }
@@ -1042,6 +1162,14 @@ a {
     grid-template-columns: 1fr;
     gap: 0.45rem;
   }
+  .education-card {
+  grid-template-columns: 1fr;
+}
+
+.education-logo-wrap {
+  width: 100%;
+  height: 120px;
+}
   .project-gallery.four-images {
   grid-template-columns: 1fr;
 }
