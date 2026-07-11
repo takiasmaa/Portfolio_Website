@@ -8,5 +8,5 @@ spec:
     spec:
       containers:
         - name: asmaa-portfolio
-          image: acrlaunchmywork.azurecr.io/asmaa-portfolio:v5
+          image: acrlaunchmywork.azurecr.io/asmaa-portfolio:v7
           
