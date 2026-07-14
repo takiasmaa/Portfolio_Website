@@ -1638,3 +1638,65 @@ body.lightbox-open {
 .project-card::before {
   pointer-events: none;
 }
+
+
+/* Shiny cursor trail */
+.cursor-sparkle-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cursor-sparkle {
+  position: absolute;
+  display: block;
+  color: #fff9cf;
+  line-height: 1;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.25);
+  transform-origin: center;
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.95),
+    0 0 9px rgba(255, 234, 155, 0.92),
+    0 0 15px rgba(125, 90, 68, 0.55);
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
+  will-change: transform, opacity;
+  animation: cursorSparkle var(--sparkle-duration, 720ms) ease-out forwards;
+}
+
+@keyframes cursorSparkle {
+  0% {
+    opacity: 0;
+    transform:
+      translate(-50%, -50%)
+      scale(0.2)
+      rotate(0deg);
+  }
+
+  18% {
+    opacity: 1;
+    transform:
+      translate(-50%, -50%)
+      scale(1)
+      rotate(calc(var(--sparkle-rotation, 30deg) * 0.35));
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translate(
+        calc(-50% + var(--sparkle-x, 0px)),
+        calc(-50% + var(--sparkle-y, -24px))
+      )
+      scale(0.35)
+      rotate(var(--sparkle-rotation, 30deg));
+  }
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .cursor-sparkle-layer {
+    display: none;
+  }
+}

@@ -9,9 +9,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Caveat:wght@500;700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="style.css?v=20260711185121">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="cursor-sparkle-layer" id="cursor-sparkle-layer" aria-hidden="true"></div>
+
   <nav class="nav" aria-label="Primary navigation">
     <a href="#home">Home</a>
     <a href="#about">About</a>
@@ -822,6 +824,105 @@
   }
 
   initializeImageLightbox();
+
+  function initializeCursorSparkles() {
+    const layer = document.getElementById('cursor-sparkle-layer');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const coarsePointer = window.matchMedia('(pointer: coarse)');
+
+    if (!layer || reduceMotion.matches || coarsePointer.matches) return;
+
+    const starCharacters = ['✦', '✧', '⋆'];
+    let lastX = 0;
+    let lastY = 0;
+    let lastEmissionTime = 0;
+    let hasPreviousPoint = false;
+
+    const minimumDistance = 18;
+    const minimumDelay = 34;
+
+    function createSparkle(x, y) {
+      const sparkle = document.createElement('span');
+      const size = 8 + Math.random() * 10;
+      const driftX = (Math.random() - 0.5) * 30;
+      const driftY = -14 - Math.random() * 24;
+      const rotation = (Math.random() - 0.5) * 100;
+      const duration = 560 + Math.random() * 340;
+
+      sparkle.className = 'cursor-sparkle';
+      sparkle.textContent =
+        starCharacters[Math.floor(Math.random() * starCharacters.length)];
+
+      sparkle.style.left = `${x}px`;
+      sparkle.style.top = `${y}px`;
+      sparkle.style.fontSize = `${size}px`;
+      sparkle.style.setProperty('--sparkle-x', `${driftX}px`);
+      sparkle.style.setProperty('--sparkle-y', `${driftY}px`);
+      sparkle.style.setProperty('--sparkle-rotation', `${rotation}deg`);
+      sparkle.style.setProperty('--sparkle-duration', `${duration}ms`);
+
+      layer.appendChild(sparkle);
+      sparkle.addEventListener('animationend', () => sparkle.remove(), {
+        once: true
+      });
+    }
+
+    function emitAlongPath(startX, startY, endX, endY, distance) {
+      const sparkleCount = Math.min(3, Math.max(1, Math.floor(distance / 24)));
+
+      for (let index = 1; index <= sparkleCount; index += 1) {
+        const progress = index / sparkleCount;
+        const x = startX + (endX - startX) * progress;
+        const y = startY + (endY - startY) * progress;
+
+        window.setTimeout(() => {
+          createSparkle(
+            x + (Math.random() - 0.5) * 8,
+            y + (Math.random() - 0.5) * 8
+          );
+        }, index * 18);
+      }
+    }
+
+    window.addEventListener(
+      'pointermove',
+      event => {
+        if (event.pointerType === 'touch') return;
+
+        const now = performance.now();
+
+        if (!hasPreviousPoint) {
+          lastX = event.clientX;
+          lastY = event.clientY;
+          lastEmissionTime = now;
+          hasPreviousPoint = true;
+          return;
+        }
+
+        const deltaX = event.clientX - lastX;
+        const deltaY = event.clientY - lastY;
+        const distance = Math.hypot(deltaX, deltaY);
+
+        if (distance < minimumDistance || now - lastEmissionTime < minimumDelay) {
+          return;
+        }
+
+        emitAlongPath(lastX, lastY, event.clientX, event.clientY, distance);
+
+        lastX = event.clientX;
+        lastY = event.clientY;
+        lastEmissionTime = now;
+      },
+      { passive: true }
+    );
+
+    window.addEventListener('blur', () => {
+      hasPreviousPoint = false;
+    });
+  }
+
+  initializeCursorSparkles();
+
 </script>
 </body>
 </html>
